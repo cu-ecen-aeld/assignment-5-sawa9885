@@ -2,8 +2,8 @@
 
 ## Assignment 5 Part 2 - Buildroot Socket Server Integration
 
-- Full chat history: Pending completion of the required interactive review;
-  the full-thread link will be added afterward.
+- Full chat history:
+  https://chatgpt.com/s/cx_6ab9a5c51dc08191aa55f3e47918260e
 - AI-assisted files:
   `base_external/package/aesd-assignments/aesd-assignments.mk`, `runqemu.sh`,
   and `AI_ATTRIBUTION.md`. The Assignment 5 workflow, assignment-selection,
@@ -14,13 +14,14 @@
   added QEMU host forwarding for port 9000 while retaining SSH forwarding on
   port 10022. Configured the new Assignment 5 classroom repository as
   `origin` while preserving the Assignment 4 remote.
-- Student review and verification: Interactive review is in progress; no
-  claim of student understanding has been recorded yet. A local-source
+- Student review and verification: The student explained TCP newline framing,
+  partial sends, signal-handler safety, graceful persistent-file cleanup,
+  Buildroot startup and forwarding, and network/SSH mitigations. A local-source
   Buildroot package build produced an AArch64 executable and image. QEMU
   automatically started the server, SSH and socket forwarding worked, the
   course socket test passed, graceful halt ran the stop script, and a restart
-  confirmed old socket data was absent. GitHub Actions verification remains
-  pending.
+  confirmed old socket data was absent. GitHub Actions full test run
+  `36341879376` completed successfully.
 - External code and sources: Course Assignment 5 instructions, course starter
   repositories and tests, and upstream Buildroot 2024.02.13. No external
   implementation code was reused.
