@@ -1,5 +1,32 @@
 # AI Assistance Attribution
 
+## Assignment 7 Part 2 - Buildroot Kernel Modules
+
+- Full chat history: https://chatgpt.com/s/cx_6ac93e63e5f081919b89f40a3ba75ff9
+- AI-assisted files: `base_external/Config.in`,
+  `base_external/configs/aesd_qemu_defconfig`,
+  `base_external/package/ldd/Config.in`,
+  `base_external/package/ldd/ldd.mk`,
+  `base_external/rootfs_overlay/etc/init.d/S98lddmodules`, and
+  `AI_ATTRIBUTION.md`.
+- Assistance provided: Added a Buildroot kernel-module package for the course
+  `misc-modules` and `scull` sources, enabled it in the saved configuration,
+  added the relative rootfs overlay, and implemented startup, device-node,
+  rollback, shutdown, and restart handling for `scull`, `faulty`, and `hello`.
+- Student review and verification: The student explained module registration,
+  major/minor device routing, why dynamic major numbers cannot be guessed,
+  required rollback when discovery fails, wrapped circular-buffer ordering,
+  allocation ownership, and the diagnostic and security meaning of the
+  observed kernel oops. The package cross-compiled for AArch64, the image
+  built and booted in QEMU, all required modules and nodes appeared, the
+  personalized hello message appeared in `/var/log/messages`, stop/restart
+  cleanup succeeded, and the course Assignment 7 Buildroot validation passed
+  locally. GitHub Actions verification is recorded after completion.
+- External code and sources: Course Assignment 7 instructions, course starter
+  repositories and tests, upstream `ldd3`, and Buildroot 2024.02.13
+  documentation. No external implementation code was reused.
+- Other student assignments used: No.
+
 ## Assignment 5 Part 2 - Buildroot Socket Server Integration
 
 - Full chat history:

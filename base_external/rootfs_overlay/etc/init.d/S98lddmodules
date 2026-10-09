@@ -1,0 +1,85 @@
+#!/bin/sh
+
+SCULL_NODES="scull0 scull1 scull2 scull3 scullpipe0 scullpipe1 scullpipe2 scullpipe3 scullsingle sculluid scullwuid scullpriv"
+
+remove_nodes()
+{
+	rm -f /dev/faulty /dev/scull /dev/scullpipe
+	for node in ${SCULL_NODES}; do
+		rm -f "/dev/${node}"
+	done
+}
+
+create_node()
+{
+	mknod "/dev/$1" c "${scull_major}" "$2" || return 1
+	chmod 0660 "/dev/$1"
+}
+
+start_modules()
+{
+	modprobe scull || return 1
+	scull_major="$(awk '$2 == "scull" { print $1 }' /proc/devices)"
+	if [ -z "${scull_major}" ]; then
+		echo "Unable to determine scull major number" >&2
+		return 1
+	fi
+
+	remove_nodes
+	minor=0
+	for node in ${SCULL_NODES}; do
+		create_node "${node}" "${minor}" || return 1
+		minor=$((minor + 1))
+	done
+	ln -s scull0 /dev/scull || return 1
+	ln -s scullpipe0 /dev/scullpipe || return 1
+
+	modprobe faulty || return 1
+	faulty_major="$(awk '$2 == "faulty" { print $1 }' /proc/devices)"
+	if [ -z "${faulty_major}" ]; then
+		echo "Unable to determine faulty major number" >&2
+		return 1
+	fi
+	mknod /dev/faulty c "${faulty_major}" 0 || return 1
+	chmod 0660 /dev/faulty
+
+	modprobe hello || return 1
+}
+
+stop_modules()
+{
+	status=0
+	if grep -q '^hello ' /proc/modules; then
+		rmmod hello || status=1
+	fi
+	if grep -q '^faulty ' /proc/modules; then
+		rmmod faulty || status=1
+	fi
+	if grep -q '^scull ' /proc/modules; then
+		rmmod scull || status=1
+	fi
+	remove_nodes
+	return "${status}"
+}
+
+case "$1" in
+	start)
+		echo "Loading LDD modules"
+		if ! start_modules; then
+			stop_modules >/dev/null 2>&1
+			exit 1
+		fi
+		;;
+	stop)
+		echo "Unloading LDD modules"
+		stop_modules
+		;;
+	restart)
+		stop_modules
+		start_modules
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart}" >&2
+		exit 1
+		;;
+esac
