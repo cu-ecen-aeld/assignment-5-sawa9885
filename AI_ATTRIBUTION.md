@@ -21,7 +21,7 @@
   built and booted in QEMU, all required modules and nodes appeared, the
   personalized hello message appeared in `/var/log/messages`, stop/restart
   cleanup succeeded, and the course Assignment 7 Buildroot validation passed
-  locally. GitHub Actions verification is recorded after completion.
+  locally. The GitHub Actions full test passed in run `37979774999`.
 - External code and sources: Course Assignment 7 instructions, course starter
   repositories and tests, upstream `ldd3`, and Buildroot 2024.02.13
   documentation. No external implementation code was reused.
